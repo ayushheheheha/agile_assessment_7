@@ -1,0 +1,44 @@
+pipeline {
+    agent any
+
+    parameters {
+        booleanParam(name: 'RUN_REVALUATION_CHECK', defaultValue: true, description: 'Run the re-evaluation eligibility check stage')
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/<your-username>/online-exam-system.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                dir('project3-conditional') {
+                    bat 'python -m py_compile app.py'
+                }
+                echo 'Build successful: app.py compiled with no syntax errors'
+            }
+        }
+
+        stage('Evaluate Results') {
+            steps {
+                dir('project3-conditional') {
+                    bat 'python app.py'
+                }
+            }
+        }
+
+        stage('Re-evaluation Check') {
+            when {
+                expression { params.RUN_REVALUATION_CHECK == true }
+            }
+            steps {
+                echo 'Running extra check: verifying re-evaluation eligibility logic...'
+                dir('project3-conditional') {
+                    bat 'python -c "from app import revaluation_eligible; print(\'S102 eligible:\', revaluation_eligible(47)); print(\'S103 eligible:\', revaluation_eligible(30))"'
+                }
+            }
+        }
+    }
+}

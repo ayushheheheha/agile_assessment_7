@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/<your-username>/online-exam-system.git'
+            }
+        }
+
+        stage('Generate Report') {
+            steps {
+                dir('project2-archive') {
+                    bat 'python app.py'
+                }
+            }
+        }
+
+        stage('Archive Report') {
+            steps {
+                archiveArtifacts artifacts: 'project2-archive/evaluation_report.txt', fingerprint: true
+            }
+        }
+    }
+}

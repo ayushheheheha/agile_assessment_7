@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/<your-username>/online-exam-system.git'
+            }
+        }
+
+        stage('Parallel Checks') {
+            parallel {
+                stage('Exam Portal Check') {
+                    steps {
+                        dir('project3-parallel') {
+                            bat 'python portal_check.py'
+                        }
+                    }
+                }
+                stage('Evaluation Engine Check') {
+                    steps {
+                        dir('project3-parallel') {
+                            bat 'python evaluation_check.py'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Summary') {
+            steps {
+                echo 'Both exam portal and evaluation engine checks are complete.'
+            }
+        }
+    }
+}
