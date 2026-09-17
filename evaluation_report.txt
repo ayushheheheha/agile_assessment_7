@@ -1,0 +1,13 @@
+Online Examination and Evaluation System
+Evaluation Report
+=============================================
+Total candidates : 4
+Passed           : 3
+Failed           : 1
+Average score    : 66.75
+---------------------------------------------
+ID      NAME       SCORE  GRADE
+S101    Arun       78     B
+S102    Divya      91     A
+S103    Karthik    55     C
+S104    Meera      43     F
