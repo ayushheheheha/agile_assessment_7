@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/<your-username>/online-exam-system.git'
+                git branch: 'main', url: 'https://github.com/ayushheheheha/agile_assessment_7.git'
             }
         }
 
@@ -12,14 +12,14 @@ pipeline {
             parallel {
                 stage('Exam Portal Check') {
                     steps {
-                        dir('project3-parallel') {
+                        dir('project2-parallel') {
                             bat 'python portal_check.py'
                         }
                     }
                 }
                 stage('Evaluation Engine Check') {
                     steps {
-                        dir('project3-parallel') {
+                        dir('project2-parallel') {
                             bat 'python evaluation_check.py'
                         }
                     }
@@ -29,7 +29,7 @@ pipeline {
 
         stage('Summary') {
             steps {
-                echo 'Both exam portal and evaluation engine checks are complete.'
+                echo 'Both frontend and backend checks are complete.'
             }
         }
     }
